@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// Use the production backend URL
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
