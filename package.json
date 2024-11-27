@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "android": "npx cap sync && npx cap open android",
     "backend": "node src/server/server.js",
-    "start": "concurrently \"npm run dev\" \"npm run backend\""
+    "start": "npm run build && npm run backend"
   },
   "dependencies": {
     "@azure/cosmos": "^4.2.0",
