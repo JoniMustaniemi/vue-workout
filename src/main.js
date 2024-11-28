@@ -7,7 +7,13 @@ import "@quasar/extras/material-icons/material-icons.css";
 
 const app = createApp(App);
 
-app.use(Quasar);
+app.use(Quasar, {
+  config: {
+    brand: {
+      primary: "#0000004d",
+    },
+  },
+});
 app.use(router);
 
 app.mount("#app");

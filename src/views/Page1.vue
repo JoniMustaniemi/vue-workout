@@ -38,7 +38,7 @@ onMounted(() => {
 
 <template>
   <div class="text-white fullscreen pageBackground">
-    <q-inner-loading :showing="visible" class="loading-overlay">
+    <q-inner-loading :showing="visible" class="loadingOverlay">
       <q-spinner-gears size="50px" color="teal-9" />
     </q-inner-loading>
 
@@ -66,7 +66,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.loading-overlay {
+.loadingOverlay {
   position: fixed;
   top: 0;
   left: 0;
