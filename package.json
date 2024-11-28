@@ -8,8 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "android": "npx cap sync && npx cap open android",
-    "backend": "node src/server/server.js",
-    "start": "npm run build && npm run backend"
+    "start": "npm run build"
   },
   "dependencies": {
     "@azure/cosmos": "^4.2.0",

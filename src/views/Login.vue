@@ -33,18 +33,46 @@ const handleEmailInput = async () => {
 
 // Handle login logic.
 const handleLogin = async () => {
-  const isValidEmail = true; /*  await validateEmail(email.value); */
+  emailError.value = false;
+  errorMessage.value = "";
 
-  if (!isValidEmail) {
+  if (!email.value || !password.value) {
     emailError.value = true;
-    errorMessage.value = "Invalid email format";
+    errorMessage.value = "Email and password are required.";
     return;
   }
 
-  showForm.value = false;
-  isLoading.value = false;
+  isLoading.value = true;
 
-  router.push("/page1");
+  try {
+    // Test connection with a simple GET request to the backend.
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/items`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    // Log the data to confirm the connection.
+    console.log("Connection successful. Data received:", data);
+
+    // Navigate to the next page or handle success as needed.
+    showForm.value = false;
+    isLoading.value = false;
+
+    router.push("/page1");
+  } catch (error) {
+    console.error("Connection test failed:", error.message);
+    emailError.value = true;
+    errorMessage.value = "Unable to connect to the server. Please try again.";
+    isLoading.value = false;
+  }
 };
 </script>
 
