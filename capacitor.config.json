@@ -1,5 +1,9 @@
 {
   "appId": "com.vueworkout.app",
   "appName": "vue-workout",
-  "webDir": "dist"
+  "webDir": "dist",
+  "server": {
+    "url": "https://vue-workout-frontend.netlify.app/",
+    "cleartext": true
+  }
 }
