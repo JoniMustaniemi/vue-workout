@@ -16,9 +16,12 @@ import {
 import { validateEmail } from "../utils/utils";
 
 const email = ref("");
+const emailFound = ref(false);
 const password = ref("");
 const emailError = ref(false);
-const errorMessage = ref("");
+const passwordError = ref(false);
+const emailErrorMessage = ref("");
+const passwordErrorMessage = ref("");
 const isPwd = ref(true);
 const router = useRouter();
 
@@ -26,26 +29,50 @@ const isLoading = ref(false);
 const showForm = ref(true);
 
 // Handle email input changes.
-const handleEmailInput = async () => {
+const handleLoginInput = async () => {
   emailError.value = false;
-  errorMessage.value = "";
+  passwordError.value = false;
+  emailErrorMessage.value = "";
+  passwordErrorMessage.value = "";
 };
 
 // Handle login logic.
 const handleLogin = async () => {
+  emailFound.value = false;
   emailError.value = false;
-  errorMessage.value = "";
+  passwordError.value = false;
+  emailErrorMessage.value = "";
+  passwordErrorMessage.value = "";
 
-  if (!email.value || !password.value) {
+  if (!email.value && !password.value) {
     emailError.value = true;
-    errorMessage.value = "Email and password are required.";
+    passwordError.value = true;
+    emailErrorMessage.value = "Value required";
+    passwordErrorMessage.value = "Value required";
     return;
   }
 
-  isLoading.value = true;
+  if (!email.value) {
+    emailError.value = true;
+    emailErrorMessage.value = "Email is required";
+    return;
+  }
+
+  if (!password.value) {
+    passwordError.value = true;
+    passwordErrorMessage.value = "Password is required";
+    return;
+  }
+
+  const isEmailValid = await validateEmail(email.value);
+  if (!isEmailValid) {
+    emailError.value = true;
+    emailErrorMessage.value = "Please enter a valid email address.";
+    return;
+  }
 
   try {
-    // Test connection with a simple GET request to the backend.
+    // Test connection with a GET request to the backend.
     const response = await fetch(`${import.meta.env.VITE_API_URL}/items`, {
       method: "GET",
       headers: {
@@ -59,14 +86,35 @@ const handleLogin = async () => {
 
     const data = await response.json();
 
-    // Log the data to confirm the connection.
-    console.log("Connection successful. Data received:", data);
+    for (const user of data[0].users) {
+      // Check if user email matches.
+      if (email.value === user.email) {
+        emailFound.value = true;
 
-    // Navigate to the next page or handle success as needed.
-    showForm.value = false;
-    isLoading.value = false;
+        // Check if the password matches.
+        if (password.value !== user.password) {
+          passwordError.value = true;
+          passwordErrorMessage.value =
+            "Password was incorrect, please try again";
+          return;
+        }
 
-    router.push("/page1");
+        // If email and password are correct, proceed.
+        showForm.value = false;
+        isLoading.value = false;
+        router.push("/dashboard");
+        return;
+      }
+    }
+
+    // If email is not found or invalid, show error.
+    if (!emailFound.value) {
+      emailError.value = true;
+      passwordError.value = true;
+      emailErrorMessage.value =
+        "Email address or password was incorrect, please try again";
+      return;
+    }
   } catch (error) {
     console.error("Connection test failed:", error.message);
     emailError.value = true;
@@ -106,8 +154,8 @@ const handleLogin = async () => {
               required
               autocomplete="email"
               :error="emailError"
-              :error-message="errorMessage"
-              @update:model-value="handleEmailInput"
+              :error-message="emailErrorMessage"
+              @focus="handleLoginInput"
             />
             <q-input
               standout
@@ -118,6 +166,9 @@ const handleLogin = async () => {
               bg-color="primary"
               :type="isPwd ? 'password' : 'text'"
               autocomplete="new-password"
+              :error="passwordError"
+              :error-message="passwordErrorMessage"
+              @focus="handleLoginInput"
             >
               <template v-slot:append>
                 <q-icon
