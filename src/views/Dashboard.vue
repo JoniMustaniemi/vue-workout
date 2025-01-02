@@ -1,30 +1,36 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { QCard, QInnerLoading, QSpinnerGears, QCardSection } from "quasar";
+import { useRouter } from "vue-router";
 
 const showContent = ref(false);
 const visible = ref(true);
+const router = useRouter();
 
 const cards = ref([
   {
     title: "Treeni",
     image: "/images/fitness.png",
     description: "",
+    route: "/training",
   },
   {
     title: "Kehitys",
     image: "/images/chart.png",
     description: "",
+    route: "/development",
   },
   {
     title: "Ruokavalio",
     image: "/images/diet.png",
     description: "",
+    route: "/diet",
   },
   {
     title: "Kalenteri",
     image: "/images/calendar.png",
     description: "",
+    route: "/calendar",
   },
 ]);
 
@@ -32,8 +38,13 @@ onMounted(() => {
   setTimeout(() => {
     showContent.value = true;
     visible.value = false;
-  }, 2000);
+  }, 1200);
 });
+
+const navigate = (route) => {
+  if (!route) return;
+  router.push(route);
+};
 </script>
 
 <template>
@@ -51,6 +62,7 @@ onMounted(() => {
           :key="index"
           class="cardElement text-black"
           v-bind:class="{ 'fade-in': showContent }"
+          @click="navigate(card.route)"
         >
           <img :src="card.image" :alt="card.title" />
           <q-card-section class="title">

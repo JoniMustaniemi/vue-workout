@@ -2,14 +2,18 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import Login from "./views/Login.vue";
 import Dashboard from "./views/Dashboard.vue";
-import Page2 from "./views/Page2.vue";
-import Page3 from "./views/Page3.vue";
+import Training from "./views/Training.vue";
+import Development from "./views/Development.vue";
+import Diet from "./views/Diet.vue";
+import Calendar from "./views/Calendar.vue";
 
 const routes = [
   { path: "/", component: Login },
   { path: "/dashboard", component: Dashboard },
-  { path: "/page2", component: Page2 },
-  { path: "/page3", component: Page3 },
+  { path: "/training", component: Training },
+  { path: "/development", component: Development },
+  { path: "/diet", component: Diet },
+  { path: "/calendar", component: Calendar },
 ];
 
 const router = createRouter({
