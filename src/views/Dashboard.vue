@@ -41,7 +41,13 @@ onMounted(() => {
   }, 1200);
 });
 
-const navigate = (route) => {
+const navigateClick = (route) => {
+  if (!route) return;
+  router.push(route);
+};
+
+const navigateTouch = (route, event) => {
+  event.preventDefault();
   if (!route) return;
   router.push(route);
 };
@@ -62,11 +68,14 @@ const navigate = (route) => {
           :key="index"
           class="cardElement text-black"
           v-bind:class="{ 'fade-in': showContent }"
-          @click="navigate(card.route)"
+          v-touch:tap="(event) => navigateTouch(card.route, event)"
+          @click="() => navigateClick(card.route)"
         >
           <img :src="card.image" :alt="card.title" />
           <q-card-section class="title">
-            <div class="text-h6 text-white">{{ card.title }}</div>
+            <div @pointerup="navigate(card.route)" class="text-h6 text-white">
+              {{ card.title }}
+            </div>
           </q-card-section>
           <q-card-section class="q-pt-none">
             {{ card.description }}
