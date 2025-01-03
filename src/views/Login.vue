@@ -38,6 +38,9 @@ const handleLoginInput = async () => {
 
 // Handle login logic.
 const handleLogin = async () => {
+  // TODO: REMOVE THIS. JUST FOR TESTING.
+  router.push("/dashboard");
+  return;
   emailFound.value = false;
   emailError.value = false;
   passwordError.value = false;

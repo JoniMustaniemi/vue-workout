@@ -16,6 +16,14 @@ app.use(Quasar, {
     },
   },
 });
-app.use(router);
 
+app.use(router);
 app.mount("#app");
+
+// Handles return on mobile.
+window.addEventListener("popstate", (event) => {
+  if (router.currentRoute.value.fullPath === "/") {
+    event.preventDefault();
+    alert("Press back again to exit");
+  }
+});
