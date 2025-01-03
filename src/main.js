@@ -19,10 +19,3 @@ app.use(Quasar, {
 
 app.use(router);
 app.mount("#app");
-
-router.beforeEach((to, from, next) => {
-  if (to.path === "/" && from.path !== "/") {
-    backPressedOnce = false; // Reset back button flag if navigating to home
-  }
-  next();
-});

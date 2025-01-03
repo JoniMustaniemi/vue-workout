@@ -1,10 +1,11 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { QCard, QInnerLoading, QSpinnerGears, QCardSection } from "quasar";
 import { useRouter } from "vue-router";
 
 const showContent = ref(false);
 const visible = ref(true);
+let backPressedOnce = false;
 const router = useRouter();
 
 const cards = ref([
@@ -39,6 +40,13 @@ onMounted(() => {
     showContent.value = true;
     visible.value = false;
   }, 1200);
+
+  // Handle Android back button
+  document.addEventListener("backbutton", handleBackButton, false);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("backbutton", handleBackButton, false);
 });
 
 const navigateClick = (route) => {
@@ -51,6 +59,22 @@ const navigateTouch = (route, event) => {
   if (!route) return;
   router.push(route);
 };
+
+const handleBackButton = () => {
+  if (router.currentRoute.value.path === "/") {
+    if (backPressedOnce) {
+      navigator.app.exitApp();
+    } else {
+      backPressedOnce = true;
+      alert("Press back again to exit");
+      setTimeout(() => {
+        backPressedOnce = false;
+      }, 2000);
+    }
+  } else {
+    router.back();
+  }
+};
 </script>
 
 <template>
@@ -60,7 +84,7 @@ const navigateTouch = (route, event) => {
     </q-inner-loading>
 
     <div v-if="showContent" class="contentWrapper">
-      <h4 class="BannerTitle text-capitalize">My Workout - v2</h4>
+      <h4 class="BannerTitle text-capitalize">My Workout - v1</h4>
 
       <div class="cardGrid">
         <q-card
