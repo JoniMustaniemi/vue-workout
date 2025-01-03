@@ -16,8 +16,6 @@ export const removeBackButtonListener = () => {
 };
 
 const handleBackButton = () => {
-  // Display an alert when the back button is pressed
-  alert("You pressed the back button!");
   App.navigateBack();
 };
 
