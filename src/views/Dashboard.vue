@@ -60,7 +60,7 @@ const navigateTouch = (route, event) => {
     </q-inner-loading>
 
     <div v-if="showContent" class="contentWrapper">
-      <h4 class="BannerTitle text-capitalize">My Workout</h4>
+      <h4 class="BannerTitle text-capitalize">My Workout - v2</h4>
 
       <div class="cardGrid">
         <q-card

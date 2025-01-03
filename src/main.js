@@ -20,10 +20,9 @@ app.use(Quasar, {
 app.use(router);
 app.mount("#app");
 
-// Handles return on mobile.
-window.addEventListener("popstate", (event) => {
-  if (router.currentRoute.value.fullPath === "/") {
-    event.preventDefault();
-    alert("Press back again to exit");
+router.beforeEach((to, from, next) => {
+  if (to.path === "/" && from.path !== "/") {
+    backPressedOnce = false; // Reset back button flag if navigating to home
   }
+  next();
 });
