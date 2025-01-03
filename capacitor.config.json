@@ -5,5 +5,8 @@
   "server": {
     "url": "https://vue-workout-frontend.netlify.app/",
     "cleartext": true
+  },
+  "android": {
+    "handleBackButton": false
   }
 }
