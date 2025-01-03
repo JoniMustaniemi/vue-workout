@@ -5,7 +5,6 @@ import router from "./router";
 import "quasar/dist/quasar.css";
 import "@quasar/extras/material-icons/material-icons.css";
 import Vue3TouchEvents from "vue3-touch-events";
-import { App as CapacitorApp } from "@capacitor/app";
 
 const app = createApp(App);
 app.use(Vue3TouchEvents);
@@ -20,24 +19,3 @@ app.use(Quasar, {
 
 app.use(router);
 app.mount("#app");
-
-let backPressedOnce = false;
-CapacitorApp.addListener("backButton", () => {
-  if (router.history.length > 1) {
-    router.back();
-  } else if (!backPressedOnce) {
-    backPressedOnce = true;
-    setTimeout(() => {
-      backPressedOnce = false;
-    }, 2000);
-
-    Dialog.create({
-      title: "Exit App",
-      message: "Press back again to exit the app",
-      cancel: true,
-      persistent: true,
-    });
-  } else {
-    CapacitorApp.exitApp();
-  }
-});
