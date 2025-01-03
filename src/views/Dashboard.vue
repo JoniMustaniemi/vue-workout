@@ -84,7 +84,7 @@ const handleBackButton = () => {
     </q-inner-loading>
 
     <div v-if="showContent" class="contentWrapper">
-      <h4 class="BannerTitle text-capitalize">My Workout - v1</h4>
+      <h4 class="BannerTitle text-capitalize">My Workout</h4>
 
       <div class="cardGrid">
         <q-card

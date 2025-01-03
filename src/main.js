@@ -19,3 +19,29 @@ app.use(Quasar, {
 
 app.use(router);
 app.mount("#app");
+
+let backPressedOnce = false;
+
+const handleBackButton = () => {
+  const currentRoute = router.currentRoute.value;
+
+  if (currentRoute.path === "/") {
+    if (backPressedOnce) {
+      alert("Exiting app...");
+    } else {
+      backPressedOnce = true;
+      alert("Press back again to exit");
+      setTimeout(() => {
+        backPressedOnce = false;
+      }, 2000);
+    }
+  } else {
+    router.back();
+  }
+};
+
+window.addEventListener("popstate", handleBackButton);
+
+window.onbeforeunload = () => {
+  window.removeEventListener("popstate", handleBackButton);
+};
