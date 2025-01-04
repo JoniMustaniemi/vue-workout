@@ -1,13 +1,11 @@
 <script setup>
 import { QBtn } from "quasar";
-import { defineEmits, ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 
-const emit = defineEmits();
+const emit = defineEmits(["delete"]);
 
-// Track visibility for opacity and transform transition
 const isVisible = ref(false);
 
-// Trigger slide-in and fade-in effect after 2 seconds
 onMounted(() => {
   setTimeout(() => {
     isVisible.value = true;
