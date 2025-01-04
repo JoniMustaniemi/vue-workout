@@ -3,8 +3,10 @@ import { ref } from "vue";
 import { QBtn } from "quasar";
 import router from "../router/router";
 import Exercise from "../components/Exercise.vue";
+import { Platform } from "quasar";
 
 const excercises = ref([]);
+const isMobile = Platform.is.mobile;
 
 const goBack = () => {
   router.push("/dashboard");
@@ -22,6 +24,7 @@ const removeExercise = (index) => {
 <template>
   <div class="fullscreen pageBackground mainContent">
     <QBtn
+      v-if="!isMobile"
       class="fixed-top-left"
       flat
       round
