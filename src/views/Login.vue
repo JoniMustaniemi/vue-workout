@@ -72,7 +72,6 @@ const handleLogin = async () => {
   }
 
   try {
-    // Test connection with a GET request to the backend.
     const response = await fetch(`${import.meta.env.VITE_API_URL}/items`, {
       method: "GET",
       headers: {

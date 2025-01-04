@@ -1,11 +1,10 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted } from "vue";
 import { QCard, QInnerLoading, QSpinnerGears, QCardSection } from "quasar";
 import { useRouter } from "vue-router";
 
 const showContent = ref(false);
 const visible = ref(true);
-let backPressedOnce = false;
 const router = useRouter();
 
 const cards = ref([
@@ -39,7 +38,7 @@ onMounted(() => {
   setTimeout(() => {
     showContent.value = true;
     visible.value = false;
-  }, 1200);
+  }, 800);
 });
 
 const navigateClick = (route) => {
@@ -74,7 +73,7 @@ const navigateTouch = (route, event) => {
         >
           <img :src="card.image" :alt="card.title" />
           <q-card-section class="title">
-            <div @pointerup="navigate(card.route)" class="text-h6 text-white">
+            <div class="text-h6 text-white">
               {{ card.title }}
             </div>
           </q-card-section>

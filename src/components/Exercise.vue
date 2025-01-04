@@ -1,0 +1,57 @@
+<script setup>
+import { QBtn } from "quasar";
+import { defineEmits, ref, onMounted } from "vue";
+
+const emit = defineEmits();
+
+// Track visibility for opacity and transform transition
+const isVisible = ref(false);
+
+// Trigger slide-in and fade-in effect after 2 seconds
+onMounted(() => {
+  setTimeout(() => {
+    isVisible.value = true;
+  }, 200);
+});
+
+const deleteExercise = () => {
+  emit("delete");
+};
+</script>
+
+<template>
+  <div class="full-width excerciseContainer">
+    <div class="exercise border" :class="{ slideIn: isVisible }">
+      <p>I'm an exercise!</p>
+      <QBtn
+        color="red"
+        flat
+        class="relative deleteBtn"
+        icon="cancel"
+        @click="deleteExercise"
+      />
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.exercise {
+  margin: 5px 10px;
+  position: relative;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: transform 1s ease, opacity 1s ease;
+  text-align: center;
+}
+
+.slideIn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.deleteBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+</style>

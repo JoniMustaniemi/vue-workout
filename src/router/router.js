@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import Login from "./views/Login.vue";
-import Dashboard from "./views/Dashboard.vue";
-import Training from "./views/Training.vue";
-import Development from "./views/Development.vue";
-import Diet from "./views/Diet.vue";
-import Calendar from "./views/Calendar.vue";
+import Login from "../views/Login.vue";
+import Dashboard from "../views/Dashboard.vue";
+import Training from "../views/Training.vue";
+import Development from "../views/Development.vue";
+import Diet from "../views/Diet.vue";
+import Calendar from "../views/Calendar.vue";
 
 const routes = [
   { path: "/", component: Login },
