@@ -4,9 +4,11 @@ import { QBtn } from "quasar";
 import router from "../router/router";
 import Exercise from "../components/Exercise.vue";
 import { Platform } from "quasar";
+import { getRef } from "../utils/utils";
 
 const excercises = ref([]);
 const isMobile = Platform.is.mobile;
+let trainingContainer;
 
 const goBack = () => {
   router.push("/dashboard");
@@ -15,8 +17,14 @@ const goBack = () => {
 const addExcercise = () => {
   excercises.value.push({});
   // Scroll to the bottom of the training container for better user experience.
-  const trainingContainer = document.getElementById("trainingContainer");
-  trainingContainer.scrollTop = trainingContainer.scrollHeight;
+  if (
+    trainingContainer &&
+    trainingContainer.scrollHeight > trainingContainer.clientHeight
+  ) {
+    trainingContainer.scrollTop = trainingContainer.scrollHeight;
+  } else if (!trainingContainer) {
+    trainingContainer = getRef("trainingContainer");
+  }
 };
 
 const removeExercise = (index) => {
@@ -65,7 +73,6 @@ const removeExercise = (index) => {
 }
 
 .trainingContainer {
-  border: 1px solid silver;
   height: 85dvh;
   overflow-y: auto;
 }

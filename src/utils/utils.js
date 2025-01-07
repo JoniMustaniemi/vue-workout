@@ -19,14 +19,18 @@ const handleBackButton = () => {
   App.navigateBack();
 };
 
-export async function validateEmail(email) {
-  // Check if email is empty
+export const validateEmail = async (email) => {
   if (!email) {
     return false;
   }
 
-  // Regular expression to validate email format
+  // Regular expression to validate email format.
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   return emailRegex.test(email);
-}
+};
+
+export const getRef = (ref) => {
+  let reference = document.getElementById(ref);
+  return reference;
+};
