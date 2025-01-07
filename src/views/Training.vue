@@ -14,6 +14,9 @@ const goBack = () => {
 
 const addExcercise = () => {
   excercises.value.push({});
+  // Scroll to the bottom of the training container for better user experience.
+  const trainingContainer = document.getElementById("trainingContainer");
+  trainingContainer.scrollTop = trainingContainer.scrollHeight;
 };
 
 const removeExercise = (index) => {
@@ -23,32 +26,34 @@ const removeExercise = (index) => {
 
 <template>
   <div class="fullscreen pageBackground mainContent">
-    <QBtn
-      v-if="!isMobile"
-      class="fixed-top-left"
-      flat
-      round
-      @click="() => goBack()"
-      icon="chevron_left"
-    />
-    <div class="titleContainer">
-      <div>Treeni</div>
-    </div>
-    <div class="center">
-      <Exercise
-        v-for="index in excercises"
-        :key="index"
-        @delete="removeExercise(index)"
+    <div class="trainingContainer" id="trainingContainer">
+      <QBtn
+        v-if="!isMobile"
+        class="fixed-top-left"
+        flat
+        round
+        @click="() => goBack()"
+        icon="chevron_left"
       />
-
-      <div class="buttonContainer fixed-bottom">
-        <q-btn
-          class="addBtn"
-          round
-          color="primary"
-          icon="add"
-          @click="addExcercise"
+      <div class="titleContainer">
+        <div>Treeni</div>
+      </div>
+      <div class="center">
+        <Exercise
+          v-for="index in excercises"
+          :key="index"
+          @delete="removeExercise(index)"
         />
+
+        <div class="buttonContainer fixed-bottom">
+          <q-btn
+            class="addBtn"
+            round
+            color="primary"
+            icon="add"
+            @click="addExcercise"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -58,6 +63,13 @@ const removeExercise = (index) => {
 .mainContent {
   font-family: "Roboto", "Open Sans", "Lato", sans-serif;
 }
+
+.trainingContainer {
+  border: 1px solid silver;
+  height: 85dvh;
+  overflow-y: auto;
+}
+
 .pageBackground {
   background-image: url("/images/background.png");
   background-size: cover;
