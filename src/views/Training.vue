@@ -104,6 +104,5 @@ const removeExercise = (index) => {
   height: fit-content;
   right: 20px;
   top: 20px;
-  border: 1px solid silver;
 }
 </style>
