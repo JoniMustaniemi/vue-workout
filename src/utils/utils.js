@@ -1,4 +1,5 @@
 import { App } from "@capacitor/app";
+import { nextTick } from "vue";
 
 let backButtonListener;
 
@@ -30,7 +31,10 @@ export const validateEmail = async (email) => {
   return emailRegex.test(email);
 };
 
-export const getRef = (ref) => {
-  let reference = document.getElementById(ref);
-  return reference;
+export const scrollToBottom = (container) => {
+  nextTick(() => {
+    if (container.value) {
+      container.value.scrollTop = container.value.scrollHeight;
+    }
+  });
 };

@@ -2,13 +2,10 @@
 import { QBtn, QInput } from "quasar";
 import { ref, onMounted } from "vue";
 
-// Emit event for deleting the exercise
 const emit = defineEmits(["delete"]);
-
-// Reactive visibility state for animation
+defineProps(["id"]);
 const isVisible = ref(false);
 
-// Reactive state for input fields
 const exercise = ref({
   exercise: "",
   weight: "",
@@ -16,22 +13,20 @@ const exercise = ref({
   sets: "",
 });
 
-// Handle component mount for animation
 onMounted(() => {
   setTimeout(() => {
     isVisible.value = true;
   }, 200);
 });
 
-// Emit delete event
-const deleteExercise = () => {
-  emit("delete");
+const deleteExercise = (id) => {
+  emit("delete", id);
 };
 </script>
 
 <template>
   <div class="full-width excerciseContainer">
-    <div class="exercise border" :class="{ slideIn: isVisible }">
+    <div class="exercise" :class="{ slideIn: isVisible }">
       <QInput
         outlined
         label-color="grey"
@@ -71,13 +66,14 @@ const deleteExercise = () => {
         type="number"
         input-style="color: whitesmoke;"
       />
+
       <QBtn
         color="red"
         flat
         size="10px"
         class="relative deleteBtn"
         icon="cancel"
-        @click="deleteExercise"
+        @click="() => deleteExercise(id)"
       />
     </div>
   </div>
@@ -85,11 +81,10 @@ const deleteExercise = () => {
 
 <style scoped>
 .exercise {
-  margin: 5px 10px;
+  margin: 10px;
   position: relative;
   opacity: 0;
-  transform: translateY(50px);
-  transition: transform 1s ease, opacity 1s ease;
+  transition: 1s ease, opacity 1s ease;
   text-align: center;
 }
 

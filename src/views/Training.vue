@@ -4,38 +4,42 @@ import { QBtn } from "quasar";
 import router from "../router/router";
 import Exercise from "../components/Exercise.vue";
 import { Platform } from "quasar";
-import { getRef } from "../utils/utils";
+import { scrollToBottom } from "../utils/utils";
 import trainingImg from "/images/fitness.png";
 
 const excercises = ref([]);
+let nextId = 0;
 const isMobile = Platform.is.mobile;
-let trainingContainer;
+const trainingContainer = ref(null);
 
 const goBack = () => {
   router.push("/dashboard");
 };
 
-const addExcercise = () => {
-  excercises.value.push({});
-  // Scroll to the bottom of the training container for better user experience.
-  if (
-    trainingContainer &&
-    trainingContainer.scrollHeight > trainingContainer.clientHeight
-  ) {
-    trainingContainer.scrollTop = trainingContainer.scrollHeight;
-  } else if (!trainingContainer) {
-    trainingContainer = getRef("trainingContainer");
-  }
+const addExercise = () => {
+  excercises.value.push({
+    id: nextId++,
+    exercise: "",
+    weight: "",
+    repeats: "",
+    sets: "",
+  });
+
+  scrollToBottom(trainingContainer);
 };
 
-const removeExercise = (index) => {
-  excercises.value.splice(index, 1);
+const removeExercise = (id) => {
+  excercises.value = excercises.value.filter((exercise) => exercise.id !== id);
 };
 </script>
 
 <template>
   <div class="fullscreen pageBackground mainContent">
-    <div class="trainingContainer" id="trainingContainer">
+    <div
+      class="trainingContainer"
+      id="trainingContainer"
+      ref="trainingContainer"
+    >
       <QBtn
         v-if="!isMobile"
         class="fixed-top-left"
@@ -49,18 +53,19 @@ const removeExercise = (index) => {
       </div>
       <div class="center">
         <Exercise
-          v-for="index in excercises"
-          :key="index"
-          @delete="removeExercise(index)"
+          v-for="exercise in excercises"
+          :key="`exercise-${exercise.id}`"
+          :id="exercise.id"
+          @delete="removeExercise"
         />
 
         <div class="buttonContainer fixed-right">
-          <q-btn
+          <QBtn
             class="addBtn"
             round
             color="primary"
             icon="add"
-            @click="addExcercise"
+            @click="addExercise"
           />
         </div>
       </div>
@@ -74,7 +79,7 @@ const removeExercise = (index) => {
 }
 
 .trainingContainer {
-  height: 99dvh;
+  height: 100dvh;
   overflow-y: auto;
 }
 
