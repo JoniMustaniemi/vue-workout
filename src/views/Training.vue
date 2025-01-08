@@ -5,6 +5,7 @@ import router from "../router/router";
 import Exercise from "../components/Exercise.vue";
 import { Platform } from "quasar";
 import { getRef } from "../utils/utils";
+import trainingImg from "/images/fitness.png";
 
 const excercises = ref([]);
 const isMobile = Platform.is.mobile;
@@ -44,7 +45,7 @@ const removeExercise = (index) => {
         icon="chevron_left"
       />
       <div class="titleContainer">
-        <div>Treeni</div>
+        <img :src="trainingImg" alt="Training Image" />
       </div>
       <div class="center">
         <Exercise
@@ -87,8 +88,10 @@ const removeExercise = (index) => {
   display: flex;
   justify-content: center;
   text-align: center;
-  padding: 20px;
-  font-size: 2rem;
+}
+
+.titleContainer img {
+  width: 100px;
 }
 
 .center {

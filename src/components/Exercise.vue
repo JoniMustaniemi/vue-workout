@@ -33,7 +33,10 @@ const deleteExercise = () => {
   <div class="full-width excerciseContainer">
     <div class="exercise border" :class="{ slideIn: isVisible }">
       <QInput
+        outlined
         label-color="grey"
+        bg-color="primary"
+        class="excerciseTitle"
         label="Harjoitus"
         v-model="exercise.exercise"
         input-style="color: whitesmoke;"
@@ -41,6 +44,7 @@ const deleteExercise = () => {
       <QInput
         label-color="grey"
         outlined
+        bg-color="primary"
         class="exerciseItem"
         label="Paino"
         v-model="exercise.weight"
@@ -50,6 +54,7 @@ const deleteExercise = () => {
       <QInput
         label-color="grey"
         outlined
+        bg-color="primary"
         class="exerciseItem"
         label="Toistot"
         v-model="exercise.repeats"
@@ -59,6 +64,7 @@ const deleteExercise = () => {
       <QInput
         label-color="grey"
         outlined
+        bg-color="primary"
         class="exerciseItem"
         label="Sarjat"
         v-model="exercise.sets"
@@ -68,6 +74,7 @@ const deleteExercise = () => {
       <QBtn
         color="red"
         flat
+        size="10px"
         class="relative deleteBtn"
         icon="cancel"
         @click="deleteExercise"
@@ -93,8 +100,8 @@ const deleteExercise = () => {
 
 .deleteBtn {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -10px;
+  left: -22px;
 }
 
 .exerciseItem {
