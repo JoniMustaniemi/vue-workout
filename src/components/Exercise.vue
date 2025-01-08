@@ -1,6 +1,6 @@
 <script setup>
 import { QBtn, QInput } from "quasar";
-import { ref, onMounted, defineEmits } from "vue";
+import { ref, onMounted } from "vue";
 
 // Emit event for deleting the exercise
 const emit = defineEmits(["delete"]);

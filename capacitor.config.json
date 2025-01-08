@@ -8,5 +8,10 @@
   },
   "android": {
     "handleBackButton": true
+  },
+  "plugins": {
+    "Keyboard": {
+      "resize": "none"
+    }
   }
 }
