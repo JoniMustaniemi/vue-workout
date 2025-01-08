@@ -99,7 +99,7 @@ const deleteExercise = () => {
 
 .exerciseItem {
   display: inline-block;
-  width: 33%;
+  width: 30%;
   margin: 5px;
 }
 </style>

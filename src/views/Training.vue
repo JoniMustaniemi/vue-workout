@@ -53,7 +53,7 @@ const removeExercise = (index) => {
           @delete="removeExercise(index)"
         />
 
-        <div class="buttonContainer fixed-bottom">
+        <div class="buttonContainer fixed-right">
           <q-btn
             class="addBtn"
             round
@@ -73,7 +73,7 @@ const removeExercise = (index) => {
 }
 
 .trainingContainer {
-  height: 85dvh;
+  height: 99dvh;
   overflow-y: auto;
 }
 
@@ -101,7 +101,7 @@ const removeExercise = (index) => {
 
 .buttonContainer {
   width: fit-content;
-  margin: 0 auto;
-  bottom: 50px;
+  right: 20px;
+  top: 20px;
 }
 </style>
