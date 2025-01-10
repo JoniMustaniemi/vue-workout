@@ -33,15 +33,16 @@ const deleteExercise = (id) => {
         bg-color="primary"
         class="excerciseTitle"
         label="Harjoitus"
+        type="text"
         v-model="exercise.exercise"
-        input-style="color: whitesmoke;"
+        input-style="color: whitesmoke; text-transform: uppercase;"
       />
       <QInput
         label-color="grey"
         outlined
         bg-color="primary"
         class="exerciseItem"
-        label="Paino"
+        label="Paino (kg)"
         v-model="exercise.weight"
         type="number"
         input-style="color: whitesmoke;"
@@ -81,6 +82,7 @@ const deleteExercise = (id) => {
 
 <style scoped>
 .exercise {
+  text-transform: ;
   margin: 10px;
   position: relative;
   opacity: 0;

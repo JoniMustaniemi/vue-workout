@@ -33,13 +33,13 @@ const cards = ref([
     route: "/calendar",
   },
 ]);
-
+/* 
 onMounted(() => {
   setTimeout(() => {
     showContent.value = true;
     visible.value = false;
   }, 800);
-});
+}); */
 
 const navigateClick = (route) => {
   if (!route) return;
@@ -55,32 +55,27 @@ const navigateTouch = (route, event) => {
 
 <template>
   <div class="text-white fullscreen pageBackground">
-    <q-inner-loading :showing="visible" class="loadingOverlay">
-      <q-spinner-gears size="50px" color="teal-9" />
-    </q-inner-loading>
-
-    <div v-if="showContent" class="contentWrapper">
+    <div class="contentWrapper">
       <h4 class="BannerTitle text-capitalize">My Workout</h4>
 
       <div class="cardGrid">
-        <q-card
+        <QCard
           v-for="(card, index) in cards"
           :key="index"
           class="cardElement text-black"
-          v-bind:class="{ 'fade-in': showContent }"
           v-touch:tap="(event) => navigateTouch(card.route, event)"
           @click="() => navigateClick(card.route)"
         >
           <img :src="card.image" :alt="card.title" />
-          <q-card-section class="title">
+          <QCardSection class="title">
             <div class="text-h6 text-white">
               {{ card.title }}
             </div>
-          </q-card-section>
-          <q-card-section class="q-pt-none">
+          </QCardSection>
+          <QCardSection class="q-pt-none">
             {{ card.description }}
-          </q-card-section>
-        </q-card>
+          </QCardSection>
+        </QCard>
       </div>
     </div>
   </div>
@@ -117,8 +112,6 @@ const navigateTouch = (route, event) => {
 .cardElement {
   text-align: center;
   vertical-align: middle;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
   height: 30dvh;
   max-height: 150px;
   max-width: 400px;
@@ -143,10 +136,6 @@ const navigateTouch = (route, event) => {
   margin: 20px auto;
   background-size: contain;
   filter: invert(0.8);
-}
-
-.cardElement.fade-in {
-  opacity: 1;
 }
 
 .pageBackground {

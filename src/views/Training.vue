@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { QBtn } from "quasar";
+import { QBtn, QIcon, QDialog, QCardSection, QSpinnerGears } from "quasar";
 import router from "../router/router";
 import Exercise from "../components/Exercise.vue";
 import { Platform } from "quasar";
@@ -11,6 +11,8 @@ const excercises = ref([]);
 let nextId = 0;
 const isMobile = Platform.is.mobile;
 const trainingContainer = ref(null);
+const dialog = ref(false);
+const isSaved = ref(false);
 
 const goBack = () => {
   router.push("/dashboard");
@@ -31,6 +33,18 @@ const addExercise = () => {
 const removeExercise = (id) => {
   excercises.value = excercises.value.filter((exercise) => exercise.id !== id);
 };
+
+const saveExercise = () => {
+  dialog.value = true;
+  isSaved.value = false;
+
+  setTimeout(() => {
+    isSaved.value = true;
+    setTimeout(() => {
+      dialog.value = false;
+    }, 2000);
+  }, 5000);
+};
 </script>
 
 <template>
@@ -45,7 +59,7 @@ const removeExercise = (id) => {
         class="fixed-top-left"
         flat
         round
-        @click="() => goBack()"
+        @click="goBack"
         icon="chevron_left"
       />
       <div class="titleContainer">
@@ -60,6 +74,9 @@ const removeExercise = (id) => {
         />
 
         <div class="buttonContainer fixed-right">
+          <QBtn class="saveBtn" round color="primary" @click="saveExercise">
+            <QIcon name="save" color="green-5" />
+          </QBtn>
           <QBtn
             class="addBtn"
             round
@@ -70,10 +87,39 @@ const removeExercise = (id) => {
         </div>
       </div>
     </div>
+    <QDialog
+      persistent
+      v-model="dialog"
+      backdrop-filter="brightness(50%)"
+      class="saveOverlay"
+    >
+      <QCardSection class="spinnerContainer">
+        <div v-if="!isSaved" class="iconContainer">
+          <QSpinnerGears color="teal-9" size="50px" />
+          <p class="saveDescription">Tallennetaan...</p>
+        </div>
+        <div v-else class="iconContainer">
+          <QIcon name="check_circle" color="green" size="50px" />
+          <p class="saveDescription complete">Muutokset tallennettu!</p>
+        </div>
+      </QCardSection>
+    </QDialog>
   </div>
 </template>
 
 <style scoped>
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
 .mainContent {
   font-family: "Roboto", "Open Sans", "Lato", sans-serif;
 }
@@ -111,6 +157,36 @@ const removeExercise = (id) => {
   width: fit-content;
   height: fit-content;
   right: 20px;
-  top: 20px;
+  top: 30px;
+}
+
+.saveBtn {
+  margin-right: 15px;
+}
+
+.spinnerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  height: 100%;
+}
+
+.iconContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.saveDescription {
+  font-family: "Roboto", "Open Sans", "Lato", sans-serif;
+  color: white;
+  margin-top: 10px;
+  animation: pulse 1.5s infinite;
+}
+
+.complete {
+  animation: unset;
 }
 </style>

@@ -6,9 +6,9 @@ import {
   QCardSection,
   QCardActions,
   QInput,
-  QBtn,
   QIcon,
-  QSpinner,
+  QBtn,
+  QSpinnerGears,
   QDialog,
   QForm,
   QPage,
@@ -23,12 +23,11 @@ const passwordError = ref(false);
 const emailErrorMessage = ref("");
 const passwordErrorMessage = ref("");
 const isPwd = ref(true);
+const isLoggedIn = ref(false);
+const dialog = ref(false);
+const showForm = ref(true);
 const router = useRouter();
 
-const isLoading = ref(false);
-const showForm = ref(true);
-
-// Handle email input changes.
 const handleLoginInput = async () => {
   emailError.value = false;
   passwordError.value = false;
@@ -36,112 +35,116 @@ const handleLoginInput = async () => {
   passwordErrorMessage.value = "";
 };
 
-// Handle login logic.
 const handleLogin = async () => {
-  emailFound.value = false;
-  emailError.value = false;
-  passwordError.value = false;
-  emailErrorMessage.value = "";
-  passwordErrorMessage.value = "";
+  dialog.value = true;
+  isLoggedIn.value = false;
 
-  if (!email.value && !password.value) {
-    emailError.value = true;
-    passwordError.value = true;
-    emailErrorMessage.value = "Value required";
-    passwordErrorMessage.value = "Value required";
-    return;
-  }
+  setTimeout(async () => {
+    emailFound.value = false;
+    emailError.value = false;
+    passwordError.value = false;
+    emailErrorMessage.value = "";
+    passwordErrorMessage.value = "";
 
-  if (!email.value) {
-    emailError.value = true;
-    emailErrorMessage.value = "Email is required";
-    return;
-  }
-
-  if (!password.value) {
-    passwordError.value = true;
-    passwordErrorMessage.value = "Password is required";
-    return;
-  }
-
-  const isEmailValid = await validateEmail(email.value);
-  if (!isEmailValid) {
-    emailError.value = true;
-    emailErrorMessage.value = "Please enter a valid email address.";
-    return;
-  }
-
-  try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/items`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-
-    for (const user of data[0].users) {
-      // Check if user email matches.
-      if (email.value === user.email) {
-        emailFound.value = true;
-
-        // Check if the password matches.
-        if (password.value !== user.password) {
-          passwordError.value = true;
-          passwordErrorMessage.value =
-            "Password was incorrect, please try again";
-          return;
-        }
-
-        // If email and password are correct, proceed.
-        showForm.value = false;
-        isLoading.value = false;
-        router.push("/dashboard");
-        return;
-      }
-    }
-
-    // If email is not found or invalid, show error.
-    if (!emailFound.value) {
+    if (!email.value && !password.value) {
       emailError.value = true;
       passwordError.value = true;
-      emailErrorMessage.value =
-        "Email address or password was incorrect, please try again";
+      emailErrorMessage.value = "Value required";
+      passwordErrorMessage.value = "Value required";
+      dialog.value = false;
       return;
     }
-  } catch (error) {
-    console.error("Connection test failed:", error.message);
-    emailError.value = true;
-    errorMessage.value = "Unable to connect to the server. Please try again.";
-    isLoading.value = false;
-  }
+
+    if (!email.value) {
+      emailError.value = true;
+      emailErrorMessage.value = "Email is required";
+      dialog.value = false;
+      return;
+    }
+
+    if (!password.value) {
+      passwordError.value = true;
+      passwordErrorMessage.value = "Password is required";
+      dialog.value = false;
+      return;
+    }
+
+    // Validate email format
+    const isEmailValid = await validateEmail(email.value);
+    if (!isEmailValid) {
+      emailError.value = true;
+      emailErrorMessage.value = "Please enter a valid email address.";
+      dialog.value = false;
+      return;
+    }
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/items`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      for (const user of data[0].users) {
+        if (email.value === user.email) {
+          emailFound.value = true;
+
+          if (password.value !== user.password) {
+            passwordError.value = true;
+            passwordErrorMessage.value =
+              "Password was incorrect, please try again";
+            dialog.value = false;
+            return;
+          }
+
+          showForm.value = false;
+          isLoggedIn.value = true;
+          setTimeout(() => {
+            dialog.value = false;
+            router.push("/dashboard");
+          }, 2000);
+          return;
+        }
+      }
+
+      if (!emailFound.value) {
+        emailError.value = true;
+        passwordError.value = true;
+        emailErrorMessage.value =
+          "Email address or password was incorrect, please try again";
+        dialog.value = false;
+        return;
+      }
+    } catch (error) {
+      console.error("Connection test failed:", error.message);
+      emailError.value = true;
+      emailErrorMessage.value =
+        "Unable to connect to the server. Please try again.";
+      dialog.value = false;
+    }
+  }, 1000);
 };
 </script>
-
 <template>
-  <q-page class="q-pa-md">
-    <transition name="fade">
-      <q-card
-        v-if="showForm"
-        class="q-pa-md fullscreen loginModal"
-        @submit.prevent="handleLogin"
-      >
-        <q-card-section>
-          <div class="text-h5 text-center q-mb-sm text-white">Welcome</div>
-          <div class="text-subtitle1 text-center q-mb-md text-white">
-            Please log in to continue.
-          </div>
-        </q-card-section>
-
-        <q-form @submit="handleLogin" class="q-gutter-md loginForm">
-          <!-- Login Form -->
-          <q-card-section>
-            <q-input
+  <QPage class="q-pa-md">
+    <QCard class="q-pa-md fullscreen loginModal">
+      <!-- Login Form -->
+      <QCardSection v-if="showForm">
+        <div class="text-h5 text-center q-mb-sm text-white">Welcome</div>
+        <div class="text-subtitle1 text-center q-mb-md text-white">
+          Please log in to continue.
+        </div>
+        <QForm @submit="handleLogin" class="q-gutter-md loginForm">
+          <!-- Email Input -->
+          <QCardSection>
+            <QInput
               standout
               label-color="white"
               input-style="color: white;"
@@ -156,7 +159,8 @@ const handleLogin = async () => {
               :error-message="emailErrorMessage"
               @focus="handleLoginInput"
             />
-            <q-input
+            <!-- Password Input -->
+            <QInput
               standout
               v-model="password"
               label="Password"
@@ -170,47 +174,49 @@ const handleLogin = async () => {
               @focus="handleLoginInput"
             >
               <template v-slot:append>
-                <q-icon
+                <QIcon
                   :name="isPwd ? 'visibility_off' : 'visibility'"
                   class="cursor-pointer pwIcon"
                   @click="isPwd = !isPwd"
                 />
               </template>
-            </q-input>
-          </q-card-section>
-
+            </QInput>
+          </QCardSection>
           <!-- Login Button -->
-          <q-card-actions align="center">
-            <q-btn
+          <QCardActions align="center">
+            <QBtn
               color="primary"
               label="Login"
               @click="handleLogin"
               class="full-width text-grey loginButton"
             />
-          </q-card-actions>
-        </q-form>
-      </q-card>
-    </transition>
+          </QCardActions>
+        </QForm>
+      </QCardSection>
 
-    <!-- Loading Spinner -->
-    <q-dialog v-model="isLoading" persistent>
-      <q-card-section class="q-pt-none q-mt-none">
-        <q-spinner color="primary" size="50px" />
-      </q-card-section>
-    </q-dialog>
-  </q-page>
+      <!-- Loading Spinner -->
+      <QDialog
+        persistent
+        v-model="dialog"
+        backdrop-filter="brightness(50%)"
+        class=""
+      >
+        <QCardSection class="LoadingContainer">
+          <div v-if="!isLoggedIn" class="loadingContent">
+            <QSpinnerGears color="teal-9" size="50px" />
+            <p>Kirjaudutaan sisään...</p>
+          </div>
+          <div v-else class="loadingContent">
+            <QIcon name="check_circle" color="green" size="50px" />
+            <p>Kirjautuminen onnistui!</p>
+          </div>
+        </QCardSection>
+      </QDialog>
+    </QCard>
+  </QPage>
 </template>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 1s;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
 .loginModal {
   background-image: url("/images/background.png");
   background-size: cover;
@@ -229,5 +235,22 @@ const handleLogin = async () => {
 
 .pwIcon {
   color: white;
+}
+
+.LoadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 200px;
+  text-align: center;
+  color: white;
+}
+
+.loadingContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 </style>
