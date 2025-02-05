@@ -1,7 +1,7 @@
 # Vue Workout
 
 ## Overview
-**Vue Workout** is a modern web application built with [**Vue.js 3**](https://vuejs.org/) for the frontend and [**Express.js**](https://expressjs.com/) for the backend, both hosted separately. The project is designed for cross-platform support, It can be used either in a web browser or as a mobile app. It integrates with [**Azure Cosmos DB**](https://azure.microsoft.com/en-us/services/cosmos-db/) for efficient cloud-based data storage and includes mobile app development support through [**Capacitor**](https://capacitorjs.com/).
+**Vue Workout** is a modern web application built with [**Vue.js 3**](https://vuejs.org/). The project is designed for cross-platform support, It can be used either in a web browser or as a mobile app. It integrates with [**Azure Cosmos DB**](https://azure.microsoft.com/en-us/services/cosmos-db/) for efficient cloud-based data storage and includes mobile app development support through [**Capacitor**](https://capacitorjs.com/).
 
 ---
 
