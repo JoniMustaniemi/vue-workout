@@ -1,23 +1,45 @@
 <script setup>
 import { QBtn, QInput } from "quasar";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 
-const emit = defineEmits(["delete"]);
-defineProps(["id"]);
-const isVisible = ref(false);
+const emit = defineEmits(["delete", "update"]);
+
+const props = defineProps({
+  id: { type: Number, required: true },
+});
 
 const exercise = ref({
+  id: props.id,
   exercise: "",
   weight: "",
   repeats: "",
   sets: "",
 });
 
+const isVisible = ref(false);
+let timeoutTimer = null;
+
 onMounted(() => {
   setTimeout(() => {
     isVisible.value = true;
   }, 200);
 });
+
+watch(
+  () => exercise.value,
+  (newValue) => {
+    // Clear the existing timeout if there's a new change
+    if (timeoutTimer) {
+      clearTimeout(timeoutTimer);
+    }
+
+    // Set a new timeout to emit the updated exercise after 1 second of inactivity
+    timeoutTimer = setTimeout(() => {
+      emit("update", newValue); // Emit updated exercise object
+    }, 1000);
+  },
+  { deep: true } // Watch for nested changes in the object
+);
 
 const deleteExercise = (id) => {
   emit("delete", id);
@@ -82,7 +104,6 @@ const deleteExercise = (id) => {
 
 <style scoped>
 .exercise {
-  text-transform: ;
   margin: 10px;
   position: relative;
   opacity: 0;

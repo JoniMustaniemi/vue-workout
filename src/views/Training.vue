@@ -6,8 +6,9 @@ import Exercise from "../components/Exercise.vue";
 import { Platform } from "quasar";
 import { scrollToBottom } from "../utils/utils";
 import trainingImg from "/images/fitness.png";
+import { getDate } from "../utils/utils";
 
-const excercises = ref([]);
+const exercises = ref([]);
 let nextId = 0;
 const isMobile = Platform.is.mobile;
 const trainingContainer = ref(null);
@@ -19,24 +20,45 @@ const goBack = () => {
 };
 
 const addExercise = () => {
-  excercises.value.push({
+  const currentDate = getDate();
+
+  exercises.value.push({
     id: nextId++,
     exercise: "",
     weight: "",
     repeats: "",
     sets: "",
+    date: currentDate,
   });
 
   scrollToBottom(trainingContainer);
 };
 
 const removeExercise = (id) => {
-  excercises.value = excercises.value.filter((exercise) => exercise.id !== id);
+  exercises.value = exercises.value.filter((exercise) => exercise.id !== id);
+};
+
+const updateExercise = (updatedExercise) => {
+  const index = exercises.value.findIndex(
+    (exercise) => exercise.id === updatedExercise.id
+  );
+
+  if (index !== -1) {
+    exercises.value.splice(index, 1, updatedExercise);
+  }
 };
 
 const saveExercise = () => {
   dialog.value = true;
   isSaved.value = false;
+
+  const exercisesWithoutId = exercises.value.map(({ id, ...rest }) => rest);
+
+  console.log("EXERCISES WITHOUT ID", exercisesWithoutId);
+
+  try {
+    const email = "test@example.com";
+  } catch (error) {}
 
   setTimeout(() => {
     isSaved.value = true;
@@ -67,10 +89,11 @@ const saveExercise = () => {
       </div>
       <div class="center">
         <Exercise
-          v-for="exercise in excercises"
+          v-for="exercise in exercises"
           :key="`exercise-${exercise.id}`"
           :id="exercise.id"
           @delete="removeExercise"
+          @update="updateExercise"
         />
 
         <div class="buttonContainer fixed-right">
