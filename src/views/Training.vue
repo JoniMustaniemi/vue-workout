@@ -96,7 +96,7 @@ const saveExercise = () => {
           @update="updateExercise"
         />
 
-        <div class="buttonContainer fixed-right">
+        <div class="buttonContainer">
           <QBtn class="saveBtn" round color="primary" @click="saveExercise">
             <QIcon name="save" color="green-5" />
           </QBtn>
@@ -148,8 +148,12 @@ const saveExercise = () => {
 }
 
 .trainingContainer {
+  position: relative;
   height: 100dvh;
   overflow-y: auto;
+  max-width: 600px;
+  min-width: 320px;
+  margin: 0 auto;
 }
 
 .pageBackground {
@@ -177,9 +181,11 @@ const saveExercise = () => {
 }
 
 .buttonContainer {
+  position: absolute;
+  top: 0;
   width: fit-content;
   height: fit-content;
-  right: 20px;
+  right: 10px;
   top: 30px;
 }
 

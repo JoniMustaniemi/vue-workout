@@ -253,4 +253,23 @@ const handleLogin = async () => {
   align-items: center;
   flex-direction: column;
 }
+
+@media screen and (max-width: 768px) and (orientation: landscape) {
+  .loginModal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .loginForm {
+    max-width: 90%;
+    min-width: 60%;
+  }
+
+  .LoadingContainer {
+    height: auto;
+    padding: 20px;
+  }
+}
 </style>

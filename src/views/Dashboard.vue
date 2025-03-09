@@ -164,4 +164,22 @@ const navigateTouch = (route, event) => {
     max-height: 100dvh;
   }
 }
+
+@media (max-width: 800px) and (orientation: landscape) {
+  .cardGrid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cardElement {
+    height: 100dvh;
+  }
+
+  .contentWrapper {
+    margin-top: 0;
+    max-height: 100dvh;
+    overflow-y: auto;
+  }
+}
 </style>
