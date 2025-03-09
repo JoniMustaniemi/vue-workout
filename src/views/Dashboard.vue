@@ -95,17 +95,20 @@ const navigateTouch = (route, event) => {
 .contentWrapper {
   overflow-y: auto;
   padding: 20px;
+  margin-top: 100px;
 }
 
 .BannerTitle {
   text-align: center;
+  margin: 0;
+  margin-bottom: 20px;
 }
 
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
-  max-width: 1000px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
@@ -153,6 +156,7 @@ const navigateTouch = (route, event) => {
 
   .cardElement {
     width: 100%;
+    min-height: 0;
   }
 }
 </style>
