@@ -158,5 +158,9 @@ const navigateTouch = (route, event) => {
     width: 100%;
     min-height: 0;
   }
+
+  .contentWrapper {
+    margin-top: 0;
+  }
 }
 </style>
