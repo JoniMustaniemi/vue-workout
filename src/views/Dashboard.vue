@@ -161,6 +161,7 @@ const navigateTouch = (route, event) => {
 
   .contentWrapper {
     margin-top: 0;
+    max-height: 100dvh;
   }
 }
 </style>
