@@ -224,8 +224,8 @@ const handleLogin = async () => {
 }
 
 .loginForm {
-  max-width: 600px;
-  min-width: 320px;
+  max-width: 400px;
+  min-width: 250px;
   margin: 0 auto;
 }
 

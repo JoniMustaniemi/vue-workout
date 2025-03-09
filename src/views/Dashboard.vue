@@ -143,4 +143,16 @@ const navigateTouch = (route, event) => {
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+@media (max-width: 600px) {
+  .cardGrid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cardElement {
+    width: 100%;
+  }
+}
 </style>
